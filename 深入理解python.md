@@ -741,7 +741,659 @@ test(a, b)
     用来完成对2个数求和
 (END)
 
+
+# 打印一条横线
+def printOneLine():
+    print("-"*30)
+    
+
+a = 200    
+def test():
+    globa a
+    a = 300
+    
+print(a) # 300
+
+>>> li = [1,]
+>>> def f2():
+...     li.append(1)
+...     print li
+...
+>>> f2()
+[1, 1]
+>>> li
+[1, 1]
+
+
+
+在python中我们可不可以返回多个值？
+>>> def divid(a, b):
+...     shang = a//b
+...     yushu = a%b 
+...     return shang, yushu
+...
+>>> sh, yu = divid(5, 2)
+>>> sh
+5
+>>> yu
+1
+本质是利用了元组
+
+
+
+缺省参数
+def printinfo( name, age = 35 ):
+   # 打印任何传入的字符串
+   print "Name: ", name
+   print "Age ", age
+
+# 调用printinfo函数
+printinfo(name="miki" )
+printinfo( age=9,name="miki" )
+
+
+
+
+2.不定长参数
+有时可能需要一个函数能处理比当初声明时更多的参数。这些参数叫做不定长参数，声明时不会命名。
+
+基本语法如下：
+
+    def functionname([formal_args,] *args, **kwargs):
+       "函数_文档字符串"
+       function_suite
+       return [expression]
+加了星号（*）的变量args会存放所有未命名的变量参数，args为元组；而加**的变量kwargs会存放命名参数，即形如key=value的参数， kwargs为字典。
+
+
+
+lambda [arg1 [,arg2,.....argn]]:expression
+
+sum = lambda arg1, arg2: arg1 + arg2
+
+    #调用sum函数
+    print "Value of total : ", sum( 10, 20 )
+    print "Value of total : ", sum( 20, 20 )
+    
+    
+函数作为参数传递
+自己定义函数
+>>> def fun(a, b, opt):
+...     print "a =", a
+...     print "b =", b
+...     print "result =", opt(a, b)
+...
+>>> fun(1, 2, lambda x,y:x+y)
+a = 1
+b = 2
+result = 3
+作为内置函数的参数
+  
+  
+stus = [
+    {"name":"zhangsan", "age":18}, 
+    {"name":"lisi", "age":19}, 
+    {"name":"wangwu", "age":17}
+]
+按age排序：
+>>> stus.sort(key = lambda x:x['age'])
+>>> stus
+[{'age': 17, 'name': 'wangwu'}, {'age': 18, 'name': 'zhangsan'}, {'age': 19, 'name': 'lisi'}]
+ 
 ```
+
+
+```
+打开一个已经存在的文件，或者创建一个新文件
+f = open('test.txt', 'w')
+f.write('hello world, i am here!')
+# 关闭这个文件
+f.close()
+
+
+
+
+使用read(num)可以从文件中读取数据，num表示要从文件中读取的数据的长度（单位是字节），如果没有传入num，那么就表示读取文件中所有的数据
+
+
+f = open('test.txt', 'r')
+content = f.read()
+
+print(content)
+
+f.close()
+
+如果open是打开一个文件，那么可以不用谢打开的模式，即只写 open('test.txt')
+如果使用读了多次，那么后面读取的数据是从上次读完后的位置开始的
+
+
+eadlines可以按照行的方式把整个文件中的内容进行一次性读取，并且返回的是一个列表，其中每一行的数据为一个元素
+
+#coding=utf-8
+
+f = open('test.txt', 'r')
+
+content = f.readlines()
+
+
+f = open('test.txt', 'r')
+
+content = f.readline()
+print("1:%s"%content)
+
+content = f.readline()
+print("2:%s"%content)
+
+
+f.close()
+
+
+
+
+
+
+#coding=utf-8
+
+oldFileName = input("请输入要拷贝的文件名字:")
+
+oldFile = open(oldFileName,'r')
+
+# 如果打开文件
+if oldFile:
+
+    # 提取文件的后缀
+    fileFlagNum = oldFileName.rfind('.')
+    if fileFlagNum > 0:
+        fileFlag = oldFileName[fileFlagNum:]
+
+    # 组织新的文件名字
+    newFileName = oldFileName[:fileFlagNum] + '[复件]' + fileFlag
+
+    # 创建新文件
+    newFile = open(newFileName, 'w')
+
+    # 把旧文件中的数据，一行一行的进行复制到新文件中
+    for lineContent in oldFile.readlines():
+        newFile.write(lineContent)
+
+    # 关闭文件
+    oldFile.close()
+    newFile.close()
+
+
+f = open("test.txt", "r")
+    str = f.read(3)
+    print "读取的数据是 : ", str
+
+    # 查找当前位置
+    position = f.tell()
+    print "当前文件位置 : ", position
+
+    str = f.read(3)
+    print "读取的数据是 : ", str
+
+    # 查找当前位置
+    position = f.tell()
+    print "当前文件位置 : ", position
+
+    f.close()
+    
+    
+    
+如果在读写文件的过程中，需要从另外一个位置进行操作的话，可以使用seek()
+
+seek(offset, from)有2个参数
+
+offset:偏移量
+from:方向
+0:表示文件开头
+1:表示当前位置
+2:表示文件末尾
+demo:把位置设置为：从文件开头，偏移5个字节
+
+
+    # 打开一个已经存在的文件
+    f = open("test.txt", "r")
+    str = f.read(30)
+    print "读取的数据是 : ", str
+
+    # 查找当前位置
+    position = f.tell()
+    print "当前文件位置 : ", position
+
+    # 重新设置位置
+    f.seek(5,0)
+
+    # 查找当前位置
+    position = f.tell()
+    print "当前文件位置 : ", position
+
+    f.close()
+demo:把位置设置为：离文件末尾，3字节处
+
+
+    # 打开一个已经存在的文件
+    f = open("test.txt", "r")
+
+    # 查找当前位置
+    position = f.tell()
+    print "当前文件位置 : ", position
+
+    # 重新设置位置
+    f.seek(-3,2)
+
+    # 读取到的数据为：文件最后3个字节数据
+    str = f.read()
+    print "读取的数据是 : ", str
+
+    f.close()
+
+
+ import os
+
+    os.rename("毕业论文.txt", "毕业论文-最终版.txt")
+    os.remove("text.txt")
+    
+    os.mkdir("test")
+    os.getcwd() # 获取当前目录
+    os.chdir("../") # 改变当前目录
+    os.listdir("./") # 获取目录列表
+    os.rmdir("test") # 删除文件夹
+    
+    
+    
+    
+    #coding=utf-8
+
+    # 批量在文件名前加前缀
+
+    import os
+
+    funFlag = 1 # 1表示添加标志  2表示删除标志
+
+    folderName = './renameDir/'
+
+    # 获取指定路径的所有文件名字
+    dirList = os.listdir(folderName)
+
+    # 遍历输出所有文件名字
+    for name in dirList:
+        print name
+
+        if funFlag == 1:
+            newName = '[东哥出品]-' + name
+        elif funFlag == 2:
+            num = len('[东哥出品]-')
+            newName = name[num:]
+        print newName
+
+        os.rename(folderName+name, folderName+newName)
+
+
+
+
+
+
+
+# 定义类
+class Car:
+    # 方法
+    
+    #初始化函数，用来完成一些默认的设定
+    def __init__(self):
+        self.wheelNum = 4
+        self.color = '蓝色'
+        
+        
+    def getCarInfo(self):
+        print('车轮子个数:%d, 颜色%s'%(self.wheelNum, self.color))
+
+    def move(self):
+        print("车正在移动...")
+        
+            # 鸣笛
+    def toot(self):
+        print("车在鸣笛...嘟嘟..")
+        
+         
+
+说明：
+定义类时有2种：新式类和经典类，上面的Car为经典类，如果是Car(object)则为新式类
+类名 的命名规则按照"大驼峰"
+
+
+# 创建一个对象，并用变量BMW来保存它的引用
+BMW = Car()
+BMW.color = '黑色'
+BMW.wheelNum = 4 #轮子数量
+BMW.move()
+BMW.toot()
+print(BMW.color)
+print(BMW.wheelNum)  
+
+
+
+
+
+# 定义汽车类
+class Car:
+
+    def __init__(self, newWheelNum, newColor):
+        self.wheelNum = newWheelNum
+        self.color = newColor
+
+    def move(self):
+        print('车在跑，目标:夏威夷')
+
+# 创建对象
+BMW = Car(4, 'green')
+
+print('车的颜色为:%s'%BMW.color)
+print('车轮子数量为:%d'%BMW.wheelNum)
+
+
+
+__init__(self)中的self参数，不需要开发者传递，python解释器会自动把当前的对象引用传递进去
+
+
+
+print(BMW) # 会显示出 BMW 对象在内存中的地址
+
+
+
+
+
+class Car:
+
+    def __init__(self, newWheelNum, newColor):
+        self.wheelNum = newWheelNum
+        self.color = newColor
+
+    def __str__(self):
+        msg = "嘿。。。我的颜色是" + self.color + "我有" + int(self.wheelNum) + "个轮胎..."
+        return msg
+
+    def move(self):
+        print('车在跑，目标:夏威夷')
+
+
+BMW = Car(4, "白色")
+print(BMW)
+
+在python中方法名如果是__xxxx__()的，那么就有特殊的功能，因此叫做“魔法”方法
+当使用print输出对象的时候，只要自己定义了__str__(self)方法，那么就会打印从在这个方法中return的数据
+
+
+1. 直接通过对象名修改
+    SweetPotato.cookedLevel = 5
+2. 通过方法间接修改
+    SweetPotato.cook(5)
+
+通过使用方法来进行修改，就可以在方法中进行数据合法性的检查
+
+
+class People(object):
+
+    def __init__(self, name):
+        self.__name = name
+
+    def getName(self):
+        return self.__name
+
+    def setName(self, newName):
+        if len(newName) >= 5:
+            self.__name = newName
+        else:
+            print("error:名字长度需要大于或者等于5")
+            
+            
+如果在属性名前面加了2个下划线'__'，则表明该属性是私有属性，否则为公有属性（方法也是一样，方法名前面加了2个下划线的话表示该方法是私有的，否则为公有的）
+
+当删除一个对象时，python解释器也会默认调用一个方法，这个方法为__del__()方法
+
+
+import time
+class Animal(object):
+
+    # 初始化方法
+    # 创建完对象后会自动被调用
+    def __init__(self, name):
+        print('__init__方法被调用')
+        self.__name = name
+
+
+    # 析构方法
+    # 当对象被删除时，会自动被调用
+    def __del__(self):
+        print("__del__方法被调用")
+        print("%s对象马上被干掉了..."%self.__name)
+
+# 创建对象
+dog = Animal("哈皮狗")
+
+# 删除对象
+del dog
+
+
+总结
+当有1个变量保存了对象的引用时，此对象的引用计数就会加1
+当使用del删除变量指向的对象时，如果对象的引用计数不会1，比如3，那么此时只会让这个引用计数减1，即变为2，当再次调用del时，变为1，如果再调用1次del，此时会真的把对象进行删除
+
+
+
+
+
+# 定义一个父类，如下:
+class Cat(object):
+
+    def __init__(self, name, color="白色"):
+        self.name = name
+        self.color = color
+
+    def run(self):
+        print("%s--在跑"%self.name)
+
+
+# 定义一个子类，继承Cat类如下:
+class Bosi(Cat):
+
+    def setNewName(self, newName):
+        self.name = newName
+
+    def eat(self):
+        print("%s--在吃"%self.name)
+
+
+bs = Bosi("印度猫")
+print('bs的名字为:%s'%bs.name)
+print('bs的颜色为:%s'%bs.color)
+bs.eat()
+bs.setNewName('波斯')
+bs.run()
+
+
+私有的属性，不能通过对象直接访问，但是可以通过方法访问
+私有的方法，不能通过对象直接访问
+私有的属性、方法，不会被子类继承，也不能被访问
+一般情况下，私有的属性、方法都是不对外公布的，往往用来做内部的事情，起到安全的作用
+
+
+
+# 定义一个父类
+class A:
+    def printA(self):
+        print('----A----')
+
+# 定义一个父类
+class B:
+    def printB(self):
+        print('----B----')
+
+# 定义一个子类，继承自A、B
+class C(A,B):
+    def printC(self):
+        print('----C----')
+
+obj_C = C()
+obj_C.printA()
+obj_C.printB()
+
+
+
+
+想一想:
+如果在上面的多继承例子中，如果父类A和父类B中，有一个同名的方法，那么通过子类去调用的时候，调用哪个？
+
+#coding=utf-8
+class base(object):
+    def test(self):
+        print('----base test----')
+class A(base):
+    def test(self):
+        print('----A test----')
+
+# 定义一个父类
+class B(base):
+    def test(self):
+        print('----B test----')
+
+# 定义一个子类，继承自A、B
+class C(A,B):
+    pass
+
+
+obj_C = C()
+obj_C.test()
+
+print(C.__mro__) #可以查看C类的对象搜索方法时的先后顺序
+
+
+
+
+#coding=utf-8
+class Cat(object):
+    def __init__(self,name):
+        self.name = name
+        self.color = 'yellow'
+
+
+class Bosi(Cat):
+
+    def __init__(self,name):
+        # 调用父类的__init__方法1(python2)
+        #Cat.__init__(self,name)
+        # 调用父类的__init__方法2
+        #super(Bosi,self).__init__(name)
+        # 调用父类的__init__方法3
+        super().__init__(name)
+
+    def getName(self):
+        return self.name
+
+bosi = Bosi('xiaohua')
+
+
+
+
+
+
+# 多态
+class F1(object):
+    def show(self):
+        print 'F1.show'
+
+class S1(F1):
+    def show(self):
+        print 'S1.show'
+
+class S2(F1):
+    def show(self):
+        print 'S2.show'
+        
+        
+def Func(obj):
+    """Func函数需要接收一个F1类型或者F1子类的类型"""
+
+    print obj.show()
+
+s1_obj = S1()
+Func(s1_obj) # 在Func函数中传入S1类的对象 s1_obj，执行 S1 的show方法，结果：S1.show
+
+s2_obj = S2()
+Func(s2_obj) # 在Func函数中传入Ss类的对象 ss_obj，执行 Ss 的show方法，结果：S2.show
+
+
+
+
+
+class People(object):
+    address = '山东' #类属性
+    __site = "nowhere" # 私有类属性
+    def __init__(self):
+        self.name = 'xiaowang' #实例属性
+        self.age = 20 #实例属性
+        
+        
+class People(object):
+    country = 'china' #类属性
+
+
+print(People.country)  # china
+p = People()
+print(p.country)  # china
+p.country = 'japan' 
+print(p.country)      # japan 实例属性会屏蔽掉同名的类属性
+print(People.country)  # china
+del p.country    #删除实例属性
+print(p.country)  # china
+
+
+如果需要在类外修改类属性，必须通过类对象去引用然后进行修改
+
+
+
+
+class People(object):
+    country = 'china'
+
+    #类方法，用classmethod来进行修饰
+    @classmethod
+    def getCountry(cls):  # 对于类方法，第一个参数必须是类对象，一般以cls作为第一个参数
+        return cls.country
+    
+    # 类方法还有一个用途就是可以对类属性进行修改：
+    @classmethod
+    def setCountry(cls,country):
+        cls.country = country
+
+p = People()
+print p.getCountry()    #可以用过实例对象引用
+print People.getCountry()    #可以通过类对象引用
+
+p.setCountry('japan')   
+
+print p.getCountry()   # japan
+print People.getCountry()  # japan
+结果显示在用类方法对类属性修改之后，通过类对象和实例对象访问都发生了改变
+
+
+
+class People(object):
+    country = 'china'
+
+    @staticmethod
+    #静态方法
+    def getCountry():
+        return People.country
+
+
+print People.getCountry()
+```
+
+
+
+
+
 
 
 
